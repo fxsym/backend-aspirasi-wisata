@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->text('description');
-            $table->text('address')->nullable();
-            $table->text('maps_link')->nullable();
+            $table->text('address');
+            $table->text('maps_link');
             $table->string('location', 255);
             $table->text('main_image_url')->nullable();
             $table->foreignId('destination_category_id')
