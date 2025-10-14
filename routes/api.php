@@ -24,3 +24,5 @@ Route::prefix('auth')->group(function () {
 Route::get('/destination-categories', [DestinationCategoryController::class, 'index']);
 Route::post('/destination-categories', [DestinationCategoryController::class, 'store'])->middleware('auth:api');
 Route::patch('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'update'])->middleware('auth:api');
+Route::delete('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'destroy'])
+    ->middleware(['auth:api', 'can:delete,destinationCategory']);

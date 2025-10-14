@@ -43,9 +43,11 @@ class DestinationCategoryPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, DestinationCategory $destinationCategory): bool
+    public function delete(User $user, DestinationCategory $destinationCategory): Response
     {
-        return false;
+        return $user->role === 'admin'
+            ? Response::allow()
+            : Response::deny('Maaf, hanya admin yang diperbolehkan menghapus kategori destinasi.');
     }
 
     /**

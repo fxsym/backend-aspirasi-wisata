@@ -74,8 +74,12 @@ class DestinationCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DestinationCategory $destinationCategory)
     {
-        //
+        $destinationCategory->delete();
+        
+        return response()->json([
+            'message' => 'Kategori destinasi berhasil dihapus',
+        ], 200);
     }
 }
