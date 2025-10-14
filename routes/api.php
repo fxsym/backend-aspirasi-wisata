@@ -33,4 +33,4 @@ Route::get('/destination', [DestinationController::class, 'index']);
 Route::post('/destination', [DestinationController::class, 'store'])->middleware('auth:api');
 Route::patch('/destination/{destination}', [DestinationController::class, 'update'])->middleware('auth:api');
 Route::delete('/destination/{destination}', [DestinationController::class, 'destroy'])
-    ->middleware(['auth:api', 'can:delete,destinationCategory']);    
+    ->middleware(['auth:api', 'can:delete,destination']);    

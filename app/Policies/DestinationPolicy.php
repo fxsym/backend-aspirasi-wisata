@@ -43,9 +43,11 @@ class DestinationPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Destination $destination): bool
+    public function delete(User $user, Destination $destination): Response
     {
-        return false;
+        return $user->role === 'admin'
+            ? Response::allow()
+            : Response::deny('Maaf, hanya admin yang diperbolehkan menghapus destinasi.');
     }
 
     /**
