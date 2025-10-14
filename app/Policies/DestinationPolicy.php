@@ -37,7 +37,7 @@ class DestinationPolicy
      */
     public function update(User $user, Destination $destination): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**

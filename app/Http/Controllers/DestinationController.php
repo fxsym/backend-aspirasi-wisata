@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDestinationRequest;
+use App\Http\Requests\UpdateDestinationRequest;
 use App\Http\Resources\DestinationResource;
 use App\Models\Destination;
 use Illuminate\Http\Request;
@@ -60,9 +61,16 @@ class DestinationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateDestinationRequest $request, Destination $destination)
     {
-        //
+        $validated = $request->validated();
+        $destination->update($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Destinasi berhasil diperbarui.',
+            'data' => $destination
+        ], 200);
     }
 
     /**
