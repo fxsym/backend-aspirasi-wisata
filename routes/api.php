@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DestinationCategoryController;
+use App\Http\Controllers\DestinationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,10 @@ Route::post('/destination-categories', [DestinationCategoryController::class, 's
 Route::patch('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'update'])->middleware('auth:api');
 Route::delete('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'destroy'])
     ->middleware(['auth:api', 'can:delete,destinationCategory']);
+
+//Destinations
+Route::get('/destination', [DestinationController::class, 'index']);
+Route::post('/destination', [DestinationController::class, 'store'])->middleware('auth:api');
+Route::patch('/destination/{destinationCategory}', [DestinationController::class, 'update'])->middleware('auth:api');
+Route::delete('/destination/{destinationCategory}', [DestinationController::class, 'destroy'])
+    ->middleware(['auth:api', 'can:delete,destinationCategory']);    

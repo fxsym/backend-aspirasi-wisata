@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDestinationCategoryRequest;
 use App\Http\Requests\UpdateDestinationCategoryRequest;
+use App\Http\Resources\DestinationCategoryResource;
 use App\Models\DestinationCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,10 @@ class DestinationCategoryController extends Controller
     public function index()
     {
         $destinationCategories = DestinationCategory::with('destinations')->get();
-        return response()->json($destinationCategories, 200);
+        return response()->json([
+            'message' => 'Data berhasil di dapatkan',
+            'destination_categories' => DestinationCategoryResource::collection($destinationCategories),
+        ], 200);
     }
 
 
@@ -77,7 +81,7 @@ class DestinationCategoryController extends Controller
     public function destroy(DestinationCategory $destinationCategory)
     {
         $destinationCategory->delete();
-        
+
         return response()->json([
             'message' => 'Kategori destinasi berhasil dihapus',
         ], 200);
