@@ -9,7 +9,7 @@ Route::get('/test', function (Request $request) {
         'status' => 'success',
         'message' => 'API Test Berhasil!'
     ]);
-});
+})->middleware('auth:api');
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
