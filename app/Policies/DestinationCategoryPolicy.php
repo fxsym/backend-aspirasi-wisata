@@ -27,11 +27,9 @@ class DestinationCategoryPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user): bool
     {
-        return $user->role === 'admin'
-            ? Response::allow()
-            : Response::deny('Maaf, hanya admin yang diperbolehkan menambahkan kategori destinasi.');
+        return $user->role === 'admin';
     }
 
     /**
@@ -39,7 +37,7 @@ class DestinationCategoryPolicy
      */
     public function update(User $user, DestinationCategory $destinationCategory): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**

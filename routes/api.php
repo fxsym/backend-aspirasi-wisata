@@ -22,5 +22,5 @@ Route::prefix('auth')->group(function () {
 
 //Destination Categories
 Route::get('/destination-categories', [DestinationCategoryController::class, 'index']);
-Route::post('/destination-categories', [DestinationCategoryController::class, 'store'])
-    ->middleware('auth:api', 'can:create,App\Models\DestinationCategory');
+Route::post('/destination-categories', [DestinationCategoryController::class, 'store'])->middleware('auth:api');
+Route::patch('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'update'])->middleware('auth:api');

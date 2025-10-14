@@ -4,22 +4,22 @@ namespace App\Http\Requests;
 
 use App\Models\DestinationCategory;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class StoreDestinationCategoryRequest extends FormRequest
+class UpdateDestinationCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', DestinationCategory::class);
+        $destinationCategory = $this->route('destinationCategory');
+        return $this->user()->can('update', $destinationCategory);
     }
 
     protected function failedAuthorization()
     {
         throw new \Illuminate\Auth\Access\AuthorizationException(
-            'Maaf, hanya admin yang diperbolehkan menambahkan kategori destinasi.'
+            'Maaf, hanya admin yang diperbolehkan mengedit kategori destinasi.'
         );
     }
 
