@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AspirationCategoryController;
+use App\Http\Controllers\AspirationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DestinationCategoryController;
 use App\Http\Controllers\DestinationController;
@@ -38,7 +39,10 @@ Route::delete('/destination/{destination}', [DestinationController::class, 'dest
 
 //Aspiration Categories
 Route::get('/aspiration-categories', [AspirationCategoryController::class, 'index']);
-Route::post('/aspiration-categories', [AspirationCategoryController::class, 'store'])->middleware('auth:api');
-Route::patch('/aspiration-categories/{aspirationCategory}', [AspirationCategoryController::class, 'update'])->middleware('auth:api');
-Route::delete('/aspiration-categories/{aspirationCategory}', [AspirationCategoryController::class, 'destroy'])
-    ->middleware(['auth:api', 'can:delete,aspirationCategory']);
+
+//Aspiration
+Route::get('/aspiration', [AspirationController::class, 'index']);
+Route::post('/aspiration', [AspirationController::class, 'store']);
+Route::patch('/aspiration/{aspiration}', [AspirationController::class, 'update'])->middleware('auth:api');
+Route::delete('/aspiration/{aspiration}', [AspirationController::class, 'destroy'])
+    ->middleware(['auth:api', 'can:delete,aspiration']);
