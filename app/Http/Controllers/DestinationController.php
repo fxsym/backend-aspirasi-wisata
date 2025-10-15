@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateDestinationRequest;
 use App\Http\Resources\DestinationResource;
 use App\Models\Destination;
 use Cloudinary\Cloudinary;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class DestinationController extends Controller
@@ -38,11 +39,12 @@ class DestinationController extends Controller
     {
         $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
         $validated = $request->validated();
-        $destinationName = $validated['name'];
+        $destinationName = Str::slug($validated['name'], '-');
+
         if ($request->hasFile('main_image_url')) {
             $originalName = $request->file('main_image_url')->getClientOriginalName();
             $fileName = pathinfo($originalName, PATHINFO_FILENAME);
-            $publicId = date('Ymd_His') . '_' . $fileName;
+            $publicId = date('Ymd_His') . '_' . Str::slug($fileName, '-');
 
             $result = $cloudinary->uploadApi()->upload(
                 $request->file('main_image_url')->getRealPath(),
@@ -92,11 +94,61 @@ class DestinationController extends Controller
      */
     public function update(UpdateDestinationRequest $request, Destination $destination)
     {
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
         $validated = $request->validated();
-        $destination->update($validated);
+        $destinationName = Str::slug($validated['name'], '-');
+
+        // Jika ada file baru dikirim
+        if ($request->hasFile('main_image_url')) {
+
+            // 🗑️ Hapus foto lama dari Cloudinary
+            if ($destination->main_image_url) {
+                try {
+                    // Ambil path dari URL lama
+                    $urlPath = parse_url($destination->main_image_url, PHP_URL_PATH);
+                    // Contoh hasil: /djfxfwzin/image/upload/v1760497442/Destinations/Pantai%20Sangat%20Indah/20251015_030359_TestingUpdate.jpg
+                    $urlPath = urldecode($urlPath); // ubah %20 jadi spasi
+
+                    // Ambil bagian setelah "/upload/"
+                    if (preg_match('/\/upload\/(?:v\d+\/)?(.+)\.(jpg|jpeg|png)$/i', $urlPath, $matches)) {
+                        $publicId = $matches[1]; // hasil: Destinations/Pantai Sangat Indah/20251015_030359_TestingUpdate
+                        $cloudinary->uploadApi()->destroy($publicId);
+                    }
+                } catch (\Exception $e) {
+                    // Bisa log kalau mau debugging
+                    // \Log::error('Gagal hapus gambar lama: ' . $e->getMessage());
+                }
+            }
+
+            // 🔼 Upload file baru ke Cloudinary
+            $originalName = $request->file('main_image_url')->getClientOriginalName();
+            $fileName = pathinfo($originalName, PATHINFO_FILENAME);
+            $publicId = date('Ymd_His') . '_' . Str::slug($fileName, '-');
+
+            $result = $cloudinary->uploadApi()->upload(
+                $request->file('main_image_url')->getRealPath(),
+                [
+                    'public_id' => $publicId,
+                    'folder' => 'Destinations/' . $destinationName,
+                ]
+            );
+
+            $validated['main_image_url'] = $result['secure_url'];
+        }
+
+        // 🧩 Update data destinasi
+        $destination->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'address' => $validated['address'],
+            'maps_link' => $validated['maps_link'],
+            'location' => $validated['location'],
+            'main_image_url' => $validated['main_image_url'] ?? $destination->main_image_url,
+            'destination_category_id' => $validated['destination_category_id'],
+        ]);
 
         return response()->json([
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Destinasi berhasil diperbarui.',
             'data' => $destination
         ], 200);
