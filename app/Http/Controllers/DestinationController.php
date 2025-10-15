@@ -159,9 +159,37 @@ class DestinationController extends Controller
      */
     public function destroy(Destination $destination)
     {
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+
+        if ($destination->main_image_url) {
+            try {
+                // Ambil path dari URL lama
+                $urlPath = parse_url($destination->main_image_url, PHP_URL_PATH);
+                // Contoh hasil: /djfxfwzin/image/upload/v1760497442/Destinations/Pantai%20Sangat%20Indah/20251015_030359_TestingUpdate.jpg
+
+                $urlPath = urldecode($urlPath); // ubah %20 jadi spasi
+
+                // Ambil public_id tanpa ekstensi dan tanpa versi (v1760497442)
+                if (preg_match('/\/upload\/(?:v\d+\/)?(.+)\.(jpg|jpeg|png)$/i', $urlPath, $matches)) {
+                    $publicId = $matches[1]; // hasil: Destinations/Pantai Sangat Indah/20251015_030359_TestingUpdate
+
+                    // Hapus gambar dari Cloudinary
+                    $result = $cloudinary->uploadApi()->destroy($publicId);
+
+                    // Optional: log hasil untuk memastikan
+                    // \Log::info('Cloudinary delete result:', $result);
+                }
+            } catch (\Exception $e) {
+                // Log error biar tahu kenapa gagal
+            }
+        }
+
+        // Hapus data destinasi di database
         $destination->delete();
+
         return response()->json([
-            'message' => 'Destinasi berhasil dihapus',
+            'status' => 'success',
+            'message' => 'Destinasi dan gambarnya berhasil dihapus.'
         ], 200);
     }
 }
