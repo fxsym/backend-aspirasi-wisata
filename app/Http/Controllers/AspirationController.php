@@ -97,8 +97,30 @@ class AspirationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Aspiration $aspiration)
     {
-        //
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+
+        if ($aspiration->image) {
+            try {
+                $urlPath = parse_url($aspiration->image, PHP_URL_PATH);
+                $urlPath = urldecode($urlPath);
+
+                if (preg_match('/\/upload\/(?:v\d+\/)?(.+)\.(jpg|jpeg|png)$/i', $urlPath, $matches)) {
+                    $publicId = $matches[1];
+                    $result = $cloudinary->uploadApi()->destroy($publicId);
+                }
+            } catch (\Exception $e) {
+                // Log error biar tahu kenapa gagal
+            }
+        }
+
+        // Hapus data destinasi di database
+        $aspiration->delete();
+
+        return response()->json([
+            'status' => 'Success',
+            'message' => 'Aspirasi dan gambarnya berhasil dihapus.'
+        ], 200);
     }
 }

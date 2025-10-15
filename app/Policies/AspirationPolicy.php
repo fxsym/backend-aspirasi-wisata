@@ -6,7 +6,7 @@ use App\Models\Aspiration;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class AspirationResource
+class AspirationPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -43,9 +43,11 @@ class AspirationResource
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Aspiration $aspiration): bool
+    public function delete(User $user, Aspiration $aspiration): Response
     {
-        return false;
+        return $user->role === 'admin'
+            ? Response::allow()
+            : Response::deny('Maaf, hanya admin yang diperbolehkan menghapus destinasi.');
     }
 
     /**

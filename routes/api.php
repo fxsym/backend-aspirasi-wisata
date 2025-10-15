@@ -43,6 +43,6 @@ Route::get('/aspiration-categories', [AspirationCategoryController::class, 'inde
 //Aspiration
 Route::get('/aspiration', [AspirationController::class, 'index']);
 Route::post('/aspiration', [AspirationController::class, 'store']);
-Route::patch('/aspiration/{aspiration}', [AspirationController::class, 'update'])->middleware('auth:api');
+Route::patch('/aspiration/{aspiration}', [AspirationController::class, 'update'])->middleware('auth:api'); //Ga kepake
 Route::delete('/aspiration/{aspiration}', [AspirationController::class, 'destroy'])
     ->middleware(['auth:api', 'can:delete,aspiration']);
