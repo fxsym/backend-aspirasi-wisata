@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDestinationRequest;
 use App\Http\Requests\UpdateDestinationRequest;
 use App\Http\Resources\DestinationResource;
 use App\Models\Destination;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 
 class DestinationController extends Controller
@@ -35,11 +36,39 @@ class DestinationController extends Controller
      */
     public function store(StoreDestinationRequest $request)
     {
-        $destinations = Destination::create($request->validated());
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+        $validated = $request->validated();
+        $destinationName = $validated['name'];
+        if ($request->hasFile('main_image_url')) {
+            $originalName = $request->file('main_image_url')->getClientOriginalName();
+            $fileName = pathinfo($originalName, PATHINFO_FILENAME);
+            $publicId = date('Ymd_His') . '_' . $fileName;
+
+            $result = $cloudinary->uploadApi()->upload(
+                $request->file('main_image_url')->getRealPath(),
+                [
+                    'public_id' => $publicId,
+                    'folder' => 'Destinations/' . $destinationName,
+                ]
+            );
+
+            $validated['main_image_url'] = $result['secure_url'];
+        }
+
+        $destination = Destination::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'address' => $validated['address'],
+            'maps_link' => $validated['maps_link'],
+            'location' => $validated['location'],
+            'main_image_url' => $validated['main_image_url'] ?? null,
+            'destination_category_id' => $validated['destination_category_id'],
+        ]);
+
         return response()->json([
             'message' => 'Destinasi baru berhasil ditambahkan',
-            'destination' => $destinations
-        ],201);
+            'destination' => $destination
+        ], 201);
     }
 
     /**
@@ -80,7 +109,7 @@ class DestinationController extends Controller
     {
         $destination->delete();
         return response()->json([
-            'message' => 'Kategori destinasi berhasil dihapus',
+            'message' => 'Destinasi berhasil dihapus',
         ], 200);
     }
 }

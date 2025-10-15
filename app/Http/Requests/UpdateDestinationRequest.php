@@ -35,7 +35,7 @@ class UpdateDestinationRequest extends FormRequest
             'address' => 'required|string',
             'maps_link' => 'required|url',
             'location' => 'required|string|max:255',
-            'main_image_url' => 'nullable|url',
+            'main_image_url' => 'nullable|mimes:jpeg,png,jpg|max:2048',
             'destination_category_id' => 'required|exists:destination_categories,id',
         ];
     }
