@@ -5,6 +5,7 @@ use App\Http\Controllers\AspirationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DestinationCategoryController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,18 +32,22 @@ Route::delete('/destination-categories/{destinationCategory}', [DestinationCateg
     ->middleware(['auth:api', 'can:delete,destinationCategory']);
 
 //Destinations
-Route::get('/destination', [DestinationController::class, 'index']);
-Route::post('/destination', [DestinationController::class, 'store'])->middleware('auth:api');
-Route::patch('/destination/{destination}', [DestinationController::class, 'update'])->middleware('auth:api');
-Route::delete('/destination/{destination}', [DestinationController::class, 'destroy'])
+Route::get('/destinations', [DestinationController::class, 'index']);
+Route::post('/destinations', [DestinationController::class, 'store'])->middleware('auth:api');
+Route::patch('/destinations/{destination}', [DestinationController::class, 'update'])->middleware('auth:api');
+Route::delete('/destinations/{destination}', [DestinationController::class, 'destroy'])
     ->middleware(['auth:api', 'can:delete,destination']);    
 
 //Aspiration Categories
 Route::get('/aspiration-categories', [AspirationCategoryController::class, 'index']);
 
 //Aspiration
-Route::get('/aspiration', [AspirationController::class, 'index']);
-Route::post('/aspiration', [AspirationController::class, 'store']);
-Route::patch('/aspiration/{aspiration}', [AspirationController::class, 'update'])->middleware('auth:api'); //Ga kepake
-Route::delete('/aspiration/{aspiration}', [AspirationController::class, 'destroy'])
+Route::get('/aspirations', [AspirationController::class, 'index']);
+Route::post('/aspirations', [AspirationController::class, 'store']);
+Route::patch('/aspirations/{aspiration}', [AspirationController::class, 'update'])->middleware('auth:api'); //Ga kepake
+Route::delete('/aspirations/{aspiration}', [AspirationController::class, 'destroy'])
     ->middleware(['auth:api', 'can:delete,aspiration']);
+
+//User
+Route::get('/users', [UserController::class, 'index'])->middleware('auth:api');
+Route::patch('/users/{user}', [UserController::class, 'update'])->middleware('auth:api');
