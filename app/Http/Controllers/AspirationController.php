@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAspirationRequest;
+use App\Mail\AspirationCreatedMail;
 use App\Models\Aspiration;
 use App\Models\Destination;
 use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AspirationController extends Controller
@@ -63,6 +66,14 @@ class AspirationController extends Controller
             'image' => $validated['image'] ?? null,
             'aspiration_category_id' => $validated['aspiration_category_id'],
         ]);
+
+        try {
+            // Kirim email ke admin
+            Mail::to(config('mail.admin_address', 'aspirasiwisata@gmail.com'))
+                ->send(new AspirationCreatedMail($aspiration));
+        } catch (\Throwable $e) {
+            Log::error('Gagal mengirim notifikasi/email aspirasi: ' . $e->getMessage());
+        }
 
         return response()->json([
             'message' => 'Berhasil menambahkan aspirasi',
