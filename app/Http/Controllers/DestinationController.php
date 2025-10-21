@@ -20,7 +20,7 @@ class DestinationController extends Controller
         $destinations = Destination::with('aspirations', 'destinationCategory', 'destinationGalleryImages')->get();
         return response()->json([
             'message' => 'Data berhasil di dapatkan',
-            'destination' => DestinationResource::collection($destinations),
+            'destinations' => DestinationResource::collection($destinations),
         ], 200);
     }
 
@@ -57,8 +57,20 @@ class DestinationController extends Controller
             $validated['main_image_url'] = $result['secure_url'];
         }
 
+        // buat slug dasar
+        $slug = Str::slug($validated['name']);
+
+        // cek apakah slug sudah ada di database
+        $count = Destination::where('slug', 'LIKE', "{$slug}%")->count();
+
+        // jika sudah ada, tambahkan angka unik di belakang
+        if ($count > 0) {
+            $slug .= '-' . ($count + 1);
+        }
+
         $destination = Destination::create([
             'name' => $validated['name'],
+            'slug' => $slug,
             'description' => $validated['description'],
             'address' => $validated['address'],
             'maps_link' => $validated['maps_link'],
@@ -76,9 +88,24 @@ class DestinationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $destination = Destination::with(['aspirations', 'destinationCategory', 'destinationGalleryImages'])
+            ->where('slug', $slug)
+            ->first();
+
+        // Jika tidak ditemukan, kirim response 404
+        if (!$destination) {
+            return response()->json([
+                'message' => 'Destinasi tidak ditemukan.'
+            ], 404);
+        }
+
+        // Jika ditemukan, kirim data dalam format JSON
+        return response()->json([
+            'message' => 'Data destinasi ditemukan.',
+            'data' => $destination
+        ], 200);
     }
 
     /**

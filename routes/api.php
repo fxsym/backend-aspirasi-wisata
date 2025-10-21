@@ -33,6 +33,7 @@ Route::delete('/destination-categories/{destinationCategory}', [DestinationCateg
 
 //Destinations
 Route::get('/destinations', [DestinationController::class, 'index']);
+Route::get('/destinations/{slug}', [DestinationController::class, 'show']);
 Route::post('/destinations', [DestinationController::class, 'store'])->middleware('auth:api');
 Route::patch('/destinations/{destination}', [DestinationController::class, 'update'])->middleware('auth:api');
 Route::delete('/destinations/{destination}', [DestinationController::class, 'destroy'])
