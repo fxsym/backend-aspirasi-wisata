@@ -51,7 +51,6 @@ class StoreAspirationRequest extends FormRequest
             'image.mimes' => 'Gambar harus berformat JPEG, PNG, atau JPG.',
             'image.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
 
-
             'custom_category.string' => 'Kategori kustom harus berupa teks.',
             'custom_category.max' => 'Kategori kustom tidak boleh lebih dari 100 karakter.',
 

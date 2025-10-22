@@ -104,7 +104,7 @@ class DestinationController extends Controller
         // Jika ditemukan, kirim data dalam format JSON
         return response()->json([
             'message' => 'Data destinasi ditemukan.',
-            'data' => $destination
+            'destination' => $destination
         ], 200);
     }
 

@@ -63,6 +63,7 @@ class AspirationController extends Controller
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'content' => $validated['content'],
+            'custom_category' => $validated['custom_category'],
             'image' => $validated['image'] ?? null,
             'aspiration_category_id' => $validated['aspiration_category_id'],
         ]);
@@ -77,7 +78,7 @@ class AspirationController extends Controller
 
         return response()->json([
             'message' => 'Berhasil menambahkan aspirasi',
-            'destination' => $aspiration
+            'aspiration' => $aspiration
         ], 201);
     }
 
