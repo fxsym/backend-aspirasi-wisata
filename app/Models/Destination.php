@@ -41,14 +41,4 @@ class Destination extends Model
     {
         return $this->hasMany(Aspiration::class, 'destination_id', 'id');
     }
-
-    /**
-     * Get all of the comments for the Destination
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function destinationGalleryImages(): HasMany
-    {
-        return $this->hasMany(DestinationGalleryImage::class, 'destination_id', 'id');
-    }
 }

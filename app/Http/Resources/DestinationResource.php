@@ -25,7 +25,6 @@ class DestinationResource extends JsonResource
             'main_image_url' => $this->main_image_url,
             'number_of_aspirations' => count($this->aspirations),
             'destination_category' => $this->destinationCategory?->name,
-            'destinationGalleryImages' => $this->destinationGalleryImages->pluck('image_url')
         ];
     }
 }

@@ -63,7 +63,7 @@ class AspirationController extends Controller
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'content' => $validated['content'],
-            'custom_category' => $validated['custom_category'],
+            'custom_category' => $validated['custom_category'] ?? null,
             'image' => $validated['image'] ?? null,
             'aspiration_category_id' => $validated['aspiration_category_id'],
         ]);

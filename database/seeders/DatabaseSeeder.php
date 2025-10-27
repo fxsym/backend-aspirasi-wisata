@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             AspirationCategorySeeder::class,
             DestinationCategorySeeder::class,
             DestinationSeeder::class,
-            DestinationGalleryImageSeeder::class,
             AspirationSeeder::class,
         ]);
     }

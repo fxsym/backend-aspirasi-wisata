@@ -17,7 +17,7 @@ class DestinationController extends Controller
      */
     public function index()
     {
-        $destinations = Destination::with('aspirations', 'destinationCategory', 'destinationGalleryImages')->get();
+        $destinations = Destination::with('aspirations', 'destinationCategory')->get();
         return response()->json([
             'message' => 'Data berhasil di dapatkan',
             'destinations' => DestinationResource::collection($destinations),
@@ -90,7 +90,7 @@ class DestinationController extends Controller
      */
     public function show(string $slug)
     {
-        $destination = Destination::with(['aspirations', 'destinationCategory', 'destinationGalleryImages'])
+        $destination = Destination::with(['aspirations', 'destinationCategory'])
             ->where('slug', $slug)
             ->first();
 
