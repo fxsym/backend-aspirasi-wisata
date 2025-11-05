@@ -24,7 +24,7 @@ class AuthController extends Controller
 
         if (!$user) {
             throw ValidationException::withMessages([
-                'message' => ['Username yang anda masukan tidak ditemukan'],
+                'message' => [ucfirst($fieldType) . ' yang anda masukan tidak ditemukan'],
             ]);
         }
 
@@ -40,15 +40,26 @@ class AuthController extends Controller
             ]);
         }
 
-        return $this->respondWithToken($token);
+        // Buat cookie JWT (HttpOnly, Secure)
+        $cookie = cookie(
+            'access_token', // nama cookie
+            $token,         // isi token
+            60,             // durasi (menit)
+            '/',            // path
+            null,           // domain
+            true,           // secure (gunakan HTTPS)
+            true,           // httpOnly (tidak bisa diakses oleh JS)
+            false,          // raw
+            'Strict'        // SameSite: Strict / Lax
+        );
+
+        return response()->json(['message' => 'Login sukses'])->cookie($cookie);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::logout();
-        return response()->json([
-            'message' => 'Logout berhasil'
-        ]);
+        $cookie = cookie()->forget('access_token');
+        return response()->json(['message' => 'Logout sukses'])->cookie($cookie);
     }
 
     public function me()
@@ -58,17 +69,20 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        return $this->respondWithToken(Auth::refresh());
+        $newToken = Auth::refresh();
+        $cookie = cookie(
+            'access_token',
+            $newToken,
+            60,
+            '/',
+            null,
+            true,
+            true,
+            false,
+            'Strict'
+        );
+
+        return response()->json(['message' => 'Token diperbarui'])->cookie($cookie);
     }
 
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'message' => 'Login berhasil',
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60, // detik
-            'user' => Auth::user()
-        ]);
-    }
 }

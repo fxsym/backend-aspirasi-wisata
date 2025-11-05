@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DestinationCategoryController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\JwtCookieMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,25 +20,25 @@ Route::get('/test', function (Request $request) {
 //JWT Auth
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
-    Route::get('/me', [AuthController::class, 'me'])->middleware('auth:api');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware(JwtCookieMiddleware::class);
+    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware(JwtCookieMiddleware::class);
+    Route::get('/me', [AuthController::class, 'me'])->middleware(JwtCookieMiddleware::class);
 });
 
 //Destination Categories
 Route::get('/destination-categories', [DestinationCategoryController::class, 'index']);
-Route::post('/destination-categories', [DestinationCategoryController::class, 'store'])->middleware('auth:api');
-Route::patch('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'update'])->middleware('auth:api');
+Route::post('/destination-categories', [DestinationCategoryController::class, 'store'])->middleware(JwtCookieMiddleware::class);
+Route::patch('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'update'])->middleware(JwtCookieMiddleware::class);
 Route::delete('/destination-categories/{destinationCategory}', [DestinationCategoryController::class, 'destroy'])
-    ->middleware(['auth:api', 'can:delete,destinationCategory']);
+    ->middleware([JwtCookieMiddleware::class, 'can:delete,destinationCategory']);
 
 //Destinations
 Route::get('/destinations', [DestinationController::class, 'index']);
 Route::get('/destinations/{slug}', [DestinationController::class, 'show']);
-Route::post('/destinations', [DestinationController::class, 'store'])->middleware('auth:api');
-Route::patch('/destinations/{destination}', [DestinationController::class, 'update'])->middleware('auth:api');
+Route::post('/destinations', [DestinationController::class, 'store'])->middleware(JwtCookieMiddleware::class);
+Route::patch('/destinations/{destination}', [DestinationController::class, 'update'])->middleware(JwtCookieMiddleware::class);
 Route::delete('/destinations/{destination}', [DestinationController::class, 'destroy'])
-    ->middleware(['auth:api', 'can:delete,destination']);    
+    ->middleware([JwtCookieMiddleware::class, 'can:delete,destination']);    
 
 //Aspiration Categories
 Route::get('/aspiration-categories', [AspirationCategoryController::class, 'index']);
@@ -45,10 +46,10 @@ Route::get('/aspiration-categories', [AspirationCategoryController::class, 'inde
 //Aspiration
 Route::get('/aspirations', [AspirationController::class, 'index']);
 Route::post('/aspirations', [AspirationController::class, 'store']);
-Route::patch('/aspirations/{aspiration}', [AspirationController::class, 'update'])->middleware('auth:api'); //Ga kepake
+Route::patch('/aspirations/{aspiration}', [AspirationController::class, 'update'])->middleware(JwtCookieMiddleware::class); //Ga kepake
 Route::delete('/aspirations/{aspiration}', [AspirationController::class, 'destroy'])
-    ->middleware(['auth:api', 'can:delete,aspiration']);
+    ->middleware([JwtCookieMiddleware::class, 'can:delete,aspiration']);
 
 //User
-Route::get('/users', [UserController::class, 'index'])->middleware('auth:api');
-Route::patch('/users/{user}', [UserController::class, 'update'])->middleware('auth:api');
+Route::get('/users', [UserController::class, 'index'])->middleware(JwtCookieMiddleware::class);
+Route::patch('/users/{user}', [UserController::class, 'update'])->middleware(JwtCookieMiddleware::class);
