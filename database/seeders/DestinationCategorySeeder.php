@@ -14,11 +14,11 @@ class DestinationCategorySeeder extends Seeder
     public function run(): void
     {
         DB::table('destination_categories')->insert([
-            ['name' => 'Site 1', 'description' => 'Wisata pada site 1'],
-            ['name' => 'Site 2', 'description' => 'Wisata pada site 2'],
-            ['name' => 'Site 3', 'description' => 'Wisata pada site 3'],
-            ['name' => 'Site 4', 'description' => 'Wisata pada site 4'],
-            ['name' => 'Site 5', 'description' => 'Wisata pada site 5'],
+            ['name' => 'Site Baturraden', 'description' => 'Wisata pada site 1'],
+            ['name' => 'Site Gn. Slamet', 'description' => 'Wisata pada site 2'],
+            ['name' => 'Site Cipendok', 'description' => 'Wisata pada site 3'],
+            ['name' => 'Site Gombong Selatan', 'description' => 'Wisata pada site 4'],
+            ['name' => 'Site Dieng', 'description' => 'Wisata pada site 5'],
         ]);
     }
 }
