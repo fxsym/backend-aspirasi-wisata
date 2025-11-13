@@ -40,20 +40,24 @@ class AuthController extends Controller
             ]);
         }
 
-        // Buat cookie JWT (HttpOnly, Secure)
+        // ⚠️ SOLUSI: Ubah cookie configuration
         $cookie = cookie(
-            'access_token', // nama cookie
-            $token,         // isi token
-            60,             // durasi (menit)
-            '/',            // path
-            null,           // domain
-            true,           // secure (gunakan HTTPS)
-            true,           // httpOnly (tidak bisa diakses oleh JS)
-            false,          // raw
-            'Strict'        // SameSite: Strict / Lax
+            'access_token',
+            $token,
+            60,
+            '/',           // path
+            null,          // domain null = otomatis cocok origin
+            false,         // secure false untuk dev
+            true,          // httpOnly
+            false,
+            'lax'          // SameSite Lax cukup untuk dev
         );
 
-        return response()->json(['message' => 'Login sukses'])->cookie($cookie);
+
+        return response()->json([
+            'message' => 'Login sukses',
+            'token' => $token  // ⚠️ DEBUG: kirim token juga di response
+        ])->cookie($cookie);
     }
 
     public function logout()
@@ -84,5 +88,4 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Token diperbarui'])->cookie($cookie);
     }
-
 }

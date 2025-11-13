@@ -44,7 +44,7 @@ Route::delete('/destinations/{destination}', [DestinationController::class, 'des
 Route::get('/aspiration-categories', [AspirationCategoryController::class, 'index']);
 
 //Aspiration
-Route::get('/aspirations', [AspirationController::class, 'index']);
+Route::get('/aspirations', [AspirationController::class, 'index'])->middleware(JwtCookieMiddleware::class);
 Route::post('/aspirations', [AspirationController::class, 'store']);
 Route::patch('/aspirations/{aspiration}', [AspirationController::class, 'update'])->middleware(JwtCookieMiddleware::class); //Ga kepake
 Route::delete('/aspirations/{aspiration}', [AspirationController::class, 'destroy'])

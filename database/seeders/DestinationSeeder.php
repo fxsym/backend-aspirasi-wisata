@@ -36,8 +36,8 @@ class DestinationSeeder extends Seeder
                 'destination_category_id' => 1,
             ],
             [
-                'name' => 'Pancuaran 3',
-                'slug' => Str::slug('Pancuaran 3'),
+                'name' => 'Pancuran 3',
+                'slug' => Str::slug('Pancuran 3'),
                 'description' => 'Pancuran 3 memiliki sejarah panjang yang diyakini sebagai petilasan Syekh Maulana Maghribi. Pancuran ini memiliki sumber air yang berasal dari Gunung Slamet. Pengunjung yang datang biasanya selain menikmati keindahan pancuran, juga mengunjungi petilasan. Yang menarik dari wisata ini ialah airnya yang panas dan berkhasiat.',
                 'address' => 'Dusun III Kalipagu, Ketenger, Baturaden, Banyumas Regency, Central Java 53151, Ketenger, Baturraden',
                 'maps_link' => 'https://maps.app.goo.gl/4ANrRUsgRAZXrj5z6',
