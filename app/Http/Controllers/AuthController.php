@@ -44,14 +44,15 @@ class AuthController extends Controller
         $cookie = cookie(
             'access_token',
             $token,
-            60,
-            '/',           // path
-            null,          // domain null = otomatis cocok origin
-            false,         // secure false untuk dev
-            true,          // httpOnly
+            60, // menit
+            '/',
+            '.aspirasi-wisata.vercel.app', // 🔥 domain backend tanpa protocol
+            true,   // 🔥 secure harus true jika HTTPS
+            true,   // HttpOnly
             false,
-            'lax'          // SameSite Lax cukup untuk dev
+            'None'  // 🔥 wajib None untuk cross-domain
         );
+
 
 
         return response()->json([
@@ -79,12 +80,13 @@ class AuthController extends Controller
             $newToken,
             60,
             '/',
-            null,
+            '.aspirasi-wisata.vercel.app',
             true,
             true,
             false,
-            'Strict'
+            'None'
         );
+
 
         return response()->json(['message' => 'Token diperbarui'])->cookie($cookie);
     }

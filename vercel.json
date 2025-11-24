@@ -1,0 +1,69 @@
+{
+    "version": 2,
+    "framework": null,
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@0.7.2"
+        }
+    },
+    "routes": [
+        {
+            "src": "^/(.*\\.js)$",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "^/(.*\\.css)$",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "^/(.*\\.ico)$",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "^/storage/(.*)$",
+            "dest": "/public/storage/$1"
+        },
+        {
+            "src": "^/api/(.*)$",
+            "dest": "/api/index.php"
+        },
+        {
+            "src": "^/(.*)$",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "true",
+        "APP_URL": "https://api-aspirasi-wisata-econique.vercel.app/",
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "VIEW_COMPILED_PATH": "/tmp",
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "cookie",
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "ep-tiny-bush-adtc1cnw-pooler.c-2.us-east-1.aws.neon.tech",
+        "DB_PORT": "5432",
+        "DB_DATABASE": "neondb",
+        "DB_USERNAME": "neondb_owner",
+        "DB_PASSWORD": "npg_iSkpEY5MjPu1",
+        "DATABASE_URL": "postgresql://neondb_owner:npg_iSkpEY5MjPu1@ep-tiny-bush-adtc1cnw-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require",
+        "MAIL_MAILER": "smtp",
+        "MAIL_HOST": "smtp.gmail.com",
+        "MAIL_PORT": "587",
+        "MAIL_USERNAME": "aspirasiwisata@gmail.com",
+        "MAIL_PASSWORD": "zfmujhcnltkcuhvt",
+        "MAIL_ENCRYPTION": "tls",
+        "MAIL_FROM_ADDRESS": "aspirasiwisata@gmail.com",
+        "MAIL_FROM_NAME": "aspirasi-wisata",
+        "CLOUDINARY_KEY": "722812311552729",
+        "CLOUDINARY_SECRET": "oVz5kzIB4L5mTGKD8MBBdD_1Da0",
+        "CLOUDINARY_CLOUD_NAME": "djfxfwzin",
+        "CLOUDINARY_URL": "cloudinary://722812311552729:oVz5kzIB4L5mTGKD8MBBdD_1Da0@djfxfwzin"
+    },
+    "outputDirectory": "public"
+}
