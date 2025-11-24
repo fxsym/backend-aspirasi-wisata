@@ -19,7 +19,14 @@ class AspirationController extends Controller
      */
     public function index()
     {
-        $aspiration = Aspiration::with('destination', 'aspirationCategory')->get();
+        $aspiration = Aspiration::with(['destination', 'aspirationCategory'])->get();
+
+        // Tambah kolom custom tanpa mengubah struktur lainnya
+        $aspiration = $aspiration->map(function ($item) {
+            $item->site = $item->destination->destinationCategory->name ?? null;
+            return $item;
+        });
+
         return $aspiration;
     }
 
